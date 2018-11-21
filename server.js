@@ -1,14 +1,29 @@
 var express = require('express');
 var app = express();
+// Handle home page requests as well as the input sent by the HTML form
+var bodyParser = require('body-parser');
+
+// Create application/x-www-form-urlencoded parser
+var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
 // Add functionality to handle static files
 app.use(express.static('public'));
-
-
 app.get('/index.htm', function(req, res) {
   res.sendFile( __dirname + "/" + "index.htm");
 })
 
+// FNAME+LNAME POST Method
+app.post('/process_post', urlencodedParser, function (req, res) {
+   // Prepare output in JSON format
+   response = {
+      first_name:req.body.first_name,
+      last_name:req.body.last_name
+   };
+   console.log(response);
+   res.end(JSON.stringify(response));
+})
+
+// FNAME+LNAME GET Method
 app.get('/process_get', function(req, res) {
     // Prepare output in JSON format
     response = {
